@@ -1,9 +1,0 @@
-{
-  "name": "IMAGE_PROJECT_MANAGE",
-  "instructions": "When the user asks to perform an image-generation project: 1. Call list_active_projects or use the selected project. 2. Call get_project_execution_context to read the project's image-generation prompt and upload target. 3. Show the project details and prompt to the user and ask for confirmation. 4. After confirmation, generate the image using ChatGPT image generation. 5. As soon as generation completes, call upload_generated_image to automatically upload the generated image to the project's connected WebApp server location. 6. Summarize what was generated and where it was saved. 7. For batch requests, process the first item first, upload it, then ask whether to continue with the remaining items.",
-  "tools": [
-    "list_active_projects",
-    "get_project_execution_context",
-    "upload_generated_image"
-  ]
-}
