@@ -1,0 +1,13 @@
+{
+  "name": "IMAGE_PROJECT_MANAGE",
+  "description": "Runs MCP-backed image generation projects and auto-uploads generated images.",
+  "capabilities": [
+    "Image Generation"
+  ],
+  "actionsOpenApi": "../mcp/openapi/custom-gpt-action.yaml",
+  "starterPrompts": [
+    "현재 프로젝트 조회",
+    "첫 번째 프로젝트 이미지 생성해",
+    "24개 모두 생성해"
+  ]
+}

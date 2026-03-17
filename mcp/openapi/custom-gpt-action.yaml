@@ -1,0 +1,217 @@
+openapi: 3.1.0
+info:
+  title: IMAGE_PROJECT_MANAGE Action API
+  version: 0.1.0
+servers:
+  - url: https://cooking-horses-optimal-journalism.trycloudflare.com
+paths:
+  /api/projects:
+    get:
+      operationId: list_active_projects
+      summary: List image generation projects available to the GPT.
+      responses:
+        "200":
+          description: Project summaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProjectSummary"
+  /api/project/{projectId}/execution-context:
+    get:
+      operationId: get_project_execution_context
+      summary: Get the prompt and upload target for a specific project item.
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: itemId
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Execution context
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectExecutionContext"
+  /api/upload-generated-image:
+    post:
+      operationId: upload_generated_image
+      summary: Upload a ChatGPT-generated image and attach it to a project item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadGeneratedImageRequest"
+      responses:
+        "200":
+          description: Upload result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadResult"
+components:
+  schemas:
+    ProjectSummary:
+      type: object
+      required:
+        - projectId
+        - name
+        - slug
+        - description
+        - status
+        - totalItems
+        - completedItems
+        - updatedAt
+      properties:
+        projectId:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [pending, in_progress, completed, failed]
+        totalItems:
+          type: integer
+        completedItems:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+    ProjectExecutionContext:
+      type: object
+      required:
+        - project
+        - nextItem
+        - items
+        - prompt
+        - uploadTarget
+        - storagePathTemplate
+      properties:
+        project:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            status:
+              type: string
+        nextItem:
+          anyOf:
+            - type: "null"
+            - type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                prompt:
+                  type: string
+                displayOrder:
+                  type: integer
+                status:
+                  type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              prompt:
+                type: string
+              status:
+                type: string
+              displayOrder:
+                type: integer
+              imageUrl:
+                anyOf:
+                  - type: string
+                  - type: "null"
+        prompt:
+          anyOf:
+            - type: string
+            - type: "null"
+        uploadTarget:
+          type: string
+        storagePathTemplate:
+          type: string
+    UploadGeneratedImageRequest:
+      type: object
+      required:
+        - projectId
+        - itemId
+      properties:
+        projectId:
+          type: string
+        itemId:
+          type: string
+        filename:
+          type: string
+        contentType:
+          type: string
+        fileUrl:
+          type: string
+          format: uri
+        fileBase64:
+          type: string
+          description: Base64 fallback for local testing.
+        openaiFileIdRefs:
+          type: array
+          description: |
+            REQUIRED for the normal Custom GPT flow. Pass the exact image file that was just generated in the conversation.
+            This parameter name must stay exactly `openaiFileIdRefs` so ChatGPT Actions can attach generated images.
+            Expect exactly one generated image file for this MVP.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              mime_type:
+                type: string
+              download_link:
+                type: string
+                format: uri
+    UploadResult:
+      type: object
+      required:
+        - success
+        - projectId
+        - itemId
+        - filename
+        - assetPath
+        - imageUrl
+        - status
+      properties:
+        success:
+          type: boolean
+        projectId:
+          type: string
+        itemId:
+          type: string
+        filename:
+          type: string
+        assetPath:
+          type: string
+        imageUrl:
+          type: string
+        status:
+          type: string

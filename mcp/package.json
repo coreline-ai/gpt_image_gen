@@ -1,0 +1,38 @@
+{
+  "name": "@gpt-image-gen/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "prisma generate && tsx scripts/setup-db.ts && tsx watch src/server.ts",
+    "build": "prisma generate && tsc -p tsconfig.json",
+    "test": "prisma generate && DATABASE_URL=file:./test.db sh -c 'tsx scripts/setup-db.ts && vitest run'",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "tsx scripts/setup-db.ts",
+    "seed": "tsx prisma/seed.ts",
+    "recover": "tsx scripts/recover-storage.ts",
+    "smoke": "PORT=3100 BASE_URL=http://localhost:3100 sh -c 'prisma generate && tsx scripts/setup-db.ts && tsx scripts/smoke.ts'"
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.5.0",
+    "@prisma/client": "^7.0.0",
+    "better-sqlite3": "^11.10.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "file-type": "^20.5.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "@types/supertest": "^6.0.3",
+    "prisma": "^7.0.0",
+    "supertest": "^7.1.0",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  }
+}

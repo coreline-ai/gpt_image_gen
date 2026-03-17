@@ -1,0 +1,14 @@
+{
+  "name": "gpt-image-gen-mvp",
+  "private": true,
+  "workspaces": [
+    "mcp",
+    "webapp"
+  ],
+  "scripts": {
+    "build": "npm run build -w mcp && npm run build -w webapp",
+    "test": "npm run test -w mcp && npm run test -w webapp",
+    "dev:mcp": "npm run dev -w mcp",
+    "dev:webapp": "npm run dev -w webapp"
+  }
+}

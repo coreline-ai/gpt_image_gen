@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum ProjectStatus {
+  pending
+  in_progress
+  completed
+  failed
+}
+
+enum LogLevel {
+  info
+  error
+}
+
+model Project {
+  id                  String         @id @default(uuid())
+  name                String
+  slug                String         @unique
+  description         String
+  status              ProjectStatus  @default(pending)
+  uploadTarget        String
+  storagePathTemplate String
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  items               ProjectItem[]
+  logs                ProjectLog[]
+}
+
+model ProjectItem {
+  id           String        @id @default(uuid())
+  projectId    String
+  title        String
+  prompt       String
+  status       ProjectStatus @default(pending)
+  displayOrder Int
+  imageUrl     String?
+  assetPath    String?
+  filename     String?
+  contentType  String?
+  errorMessage String?
+  uploadedAt   DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  logs         ProjectLog[]
+
+  @@unique([projectId, displayOrder])
+}
+
+model ProjectLog {
+  id            String      @id @default(uuid())
+  projectId     String
+  projectItemId String?
+  step          String
+  level         LogLevel    @default(info)
+  message       String
+  metadataJson  String?
+  createdAt     DateTime    @default(now())
+  project       Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectItem   ProjectItem? @relation(fields: [projectItemId], references: [id], onDelete: SetNull)
+}
