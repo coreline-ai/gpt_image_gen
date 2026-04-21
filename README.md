@@ -1,12 +1,12 @@
+<p align="center">
+<img width="800" height="450" alt="unnamed" src="https://github.com/user-attachments/assets/1ad17fd5-6f09-4e6b-ad86-6a380a64ccca" />
 <h1 align="center">
   🤖 GPT Image Gen (MVP)
 </h1>
-
-<p align="center">
-  <strong>OpenAI Custom GPT와 로컬 MCP 서버를 연결한 프로젝트형 자동 이미지 생성 및 관리 시스템</strong>
 </p>
 
 <p align="center">
+  <strong>OpenAI Custom GPT와 로컬 MCP 서버를 연결한 프로젝트형 자동 이미지 생성 및 관리 시스템</strong><br><br>
   <img alt="Node.js" src="https://img.shields.io/badge/Node.js-20+-339933?logo=nodedotjs&logoColor=white">
   <img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white">
   <img alt="Prisma" src="https://img.shields.io/badge/Prisma-ORM-2D3748?logo=prisma&logoColor=white">
